@@ -1,0 +1,85 @@
+input, button {
+    font-family: PingFang SC;
+}
+.container{
+    width: 100%;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: #f2f2f2;
+    color: #555;
+    font-size: 16px;
+    font-family: PingFang SC;
+}
+.content{
+    height: 90vh;
+    padding: 10px;
+    padding-bottom: 20px;
+    overflow-y: scroll;
+}
+.content>ul{
+    transition: all 0.5s;
+}
+.content li{
+    line-height: 40px;
+    
+}
+.content li label{
+    color: #222;
+    display: -webkit-inline-box;
+    max-width: 200px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-inline-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.content li span{
+    background: #feb163;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+    display: inline;
+    line-height: 25px;
+    display: flex;
+}
+.content li.me span{
+    background: #45cb96;
+}
+.content li.me{
+    text-align: right;
+}
+.container .footer{
+    background: white;
+    height: 6vh;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: -webkit-box;
+    /*-webkit-box-pack: center;
+    -webkit-box-align: center;*/
+}
+.footer input[type="text"] {
+    height: 100%;
+    border: none;
+    padding-left: 5px;
+    flex: 1;
+    display: block;
+    width: 75%;
+}
+.footer input[type="button"]{
+    height: 100%;
+    background: #01afef;
+    color: white;
+    border: none;
+    display: block;
+    /*flex: 1;*/
+    width: 25%;
+}
+.footer input[type="button"]:active{
+    background: #0191c6;
+}

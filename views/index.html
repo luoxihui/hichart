@@ -1,0 +1,109 @@
+<html>
+<head>
+	#title#
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="./style/reset.css">
+	<link rel="stylesheet" type="text/css" href="./style/main.css">
+	<script src="http://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container">
+
+		<div class="content">
+			<ul>
+				
+				<li>
+					<label>李青</label>
+					<span>我用双手成就你的梦想!!!</span>
+				</li>
+				<li class="me">
+					<label>重楼</label>
+					<span>三生三世,十里桃花</span>
+				</li> 
+			</ul>
+		</div>
+		<div class="footer">
+			<input type="text" id="message" onkeydown="appendMessageByKey(event);" placeholder="哈喽,想要跟小伙伴说点什么呢!" />
+			<input type="button" id="sendMessage" value="发送" onclick="sendMessage();" />
+		</div>
+	</div>
+
+	<script>
+        //建立连接
+        var ws = new WebSocket("ws://127.0.0.1:8181");
+        var nickname = "";
+
+        ws.onopen = function (e) {
+            console.log('the server is opened');
+        }
+        
+        //收到消息处理
+        ws.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            nickname = data.nickname;
+            appendMessage(data.type, data.nickname, data.message);
+            //console.log("ID:", data.id, data.message);
+        }
+        ws.onclose = function (e) {
+            appendMessage("the connection is closed");
+        }
+        //发送消息
+        function sendMessage() {
+            var messageField = document.getElementById('message');
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(messageField.value);
+            }
+            messageField.value = '';
+            messageField.focus();
+        }
+        //修改名称
+        function changName() {
+            var name = $("#name").val();
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send("/nick " + name);
+            }
+        }
+
+        function disconnect() {
+            ws.close();
+        }
+
+        function appendMessageByKey(e) {
+        	if(e.keyCode == 13 ) $("#sendMessage").trigger("click");
+        }
+        //添加内容
+        function appendMessage(type, nickname, message) {
+        	console.log(type);
+
+            if (!message) return;
+
+            if(type == 'message') {
+            	var list = $('<li>'), child = '<label>'+ nickname +'</label>'+'<span>'+ message +'</span>';
+            	$(list).append(child);
+            	$(list).css('display', 'none');
+				$('.content>ul').append(list);
+				
+				$(list).fadeIn(400);
+				setTimeout(function() {
+					translate();
+				}, 400)
+
+
+            }else if(type == 'notification') {
+            	console.log("系统通知");
+            }
+        }
+
+        function translate() {
+        	var result = $('.content>ul').outerHeight() - $('.content').outerHeight();
+        	if(result > 0) {
+        		result += 30;
+        		$('.content>ul').css({
+					'webkit-transform': 'translateY(-'+result+'px)'
+				})
+        	}
+        }
+    </script>
+</body>
+</html>
